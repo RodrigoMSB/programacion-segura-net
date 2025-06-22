@@ -1,0 +1,23 @@
+@{
+    // ================================================================
+    //   Profile.cshtml — Vista de perfil de usuario (Versión INSEGURA)
+    // ================================================================
+    // Configura el título de la página para el layout principal.
+    // ================================================================
+    ViewData["Title"] = "Perfil Inseguro";
+}
+
+<!-- ================================================================
+  Contenido de la página de perfil:
+  - Muestra directamente el nombre de usuario y la contraseña en texto claro.
+  - Exposición deliberada de información sensible.
+  - No aplica controles de seguridad ni validación de sesión.
+  - Diseñado para evidenciar malas prácticas para fines de auditoría.
+================================================================ -->
+
+<h2>Perfil Inseguro</h2>
+
+<p>Usuario: @ViewBag.Username</p>
+<p>Contraseña: @ViewBag.Password</p>
+
+<p>Este perfil expone información sensible de forma insegura.</p>

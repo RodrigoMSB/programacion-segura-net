@@ -1,0 +1,30 @@
+<!-- ================================================================
+  _Layout.cshtml — Layout principal (Versión INSEGURA)
+  ================================================================
+  Este archivo define la estructura base de todas las vistas Razor
+  del micro front-end inseguro.
+  
+  ⚠️ Notas didácticas:
+  - No incluye cabeceras de seguridad.
+  - No usa Content Security Policy (CSP).
+  - No incorpora Anti-CSRF tokens.
+  - No enlaza hojas de estilo ni scripts externos de forma controlada.
+  - Mínimo y vulnerable a inyecciones si se manipula el contenido.
+
+  Se usa para mostrar cómo una estructura básica mal protegida es
+  insuficiente en escenarios de producción.
+================================================================ -->
+
+<!DOCTYPE html>
+<html>
+<head>
+    <!-- Título dinámico de cada vista, basado en ViewData -->
+    <title>@ViewData["Title"] - Ejemplo Inseguro Capítulo 9</title>
+</head>
+<body>
+    <div>
+        <!-- Renderiza el contenido específico de cada vista hija -->
+        @RenderBody()
+    </div>
+</body>
+</html>

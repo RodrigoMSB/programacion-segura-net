@@ -1,0 +1,60 @@
+{
+  "info": {
+    "name": "02.-EJEMPLO_SEGURO_CAP5 (Autenticaci\u00f3n JWT Segura)",
+    "schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json"
+  },
+  "item": [
+    {
+      "name": "Login Seguro",
+      "request": {
+        "method": "POST",
+        "header": [
+          {
+            "key": "Content-Type",
+            "value": "application/json"
+          }
+        ],
+        "body": {
+          "mode": "raw",
+          "raw": "{\n    \"nombre\": \"admin\",\n    \"contrasena\": \"password123\"\n}"
+        },
+        "url": {
+          "raw": "http://localhost:5000/auth/login",
+          "protocol": "http",
+          "host": [
+            "localhost"
+          ],
+          "port": "5000",
+          "path": [
+            "auth",
+            "login"
+          ]
+        }
+      }
+    },
+    {
+      "name": "Acceder Recurso Admin (JWT requerido)",
+      "request": {
+        "method": "GET",
+        "header": [
+          {
+            "key": "Authorization",
+            "value": "Bearer <Pega_Aqui_Tu_Token>"
+          }
+        ],
+        "url": {
+          "raw": "http://localhost:5000/admin/recurso",
+          "protocol": "http",
+          "host": [
+            "localhost"
+          ],
+          "port": "5000",
+          "path": [
+            "admin",
+            "recurso"
+          ]
+        }
+      }
+    }
+  ]
+}

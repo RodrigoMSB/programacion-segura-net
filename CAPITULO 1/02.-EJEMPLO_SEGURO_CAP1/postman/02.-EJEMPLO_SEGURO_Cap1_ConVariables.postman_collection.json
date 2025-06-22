@@ -1,0 +1,87 @@
+{
+  "info": {
+    "name": "SEGURIDAD .NET - Cap\u00edtulo 1",
+    "_postman_id": "e75e7f60-dfce-4f1f-8e56-111111111111",
+    "description": "Colecci\u00f3n de pruebas para API de Seguridad - Cap\u00edtulo 1, usando variables de entorno",
+    "schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json"
+  },
+  "item": [
+    {
+      "name": "Registrar Usuario",
+      "request": {
+        "method": "POST",
+        "header": [
+          {
+            "key": "Content-Type",
+            "value": "application/json",
+            "type": "text"
+          }
+        ],
+        "body": {
+          "mode": "raw",
+          "raw": "{\n  \"username\": \"rodrigo\",\n  \"email\": \"rodrigo@neitcom.cl\",\n  \"passwordHash\": \"123456\",\n  \"rol\": \"Admin\"\n}"
+        },
+        "url": {
+          "raw": "{{baseUrl}}/api/usuario/registrar",
+          "host": [
+            "{{baseUrl}}"
+          ],
+          "path": [
+            "api",
+            "usuario",
+            "registrar"
+          ]
+        }
+      },
+      "response": []
+    },
+    {
+      "name": "Login de Usuario",
+      "request": {
+        "method": "POST",
+        "header": [
+          {
+            "key": "Content-Type",
+            "value": "application/json",
+            "type": "text"
+          }
+        ],
+        "body": {
+          "mode": "raw",
+          "raw": "{\n  \"username\": \"rodrigo\",\n  \"password\": \"123456\"\n}"
+        },
+        "url": {
+          "raw": "{{baseUrl}}/api/usuario/login",
+          "host": [
+            "{{baseUrl}}"
+          ],
+          "path": [
+            "api",
+            "usuario",
+            "login"
+          ]
+        }
+      },
+      "response": []
+    },
+    {
+      "name": "Listar Usuarios",
+      "request": {
+        "method": "GET",
+        "header": [],
+        "url": {
+          "raw": "{{baseUrl}}/api/usuario/listar",
+          "host": [
+            "{{baseUrl}}"
+          ],
+          "path": [
+            "api",
+            "usuario",
+            "listar"
+          ]
+        }
+      },
+      "response": []
+    }
+  ]
+}

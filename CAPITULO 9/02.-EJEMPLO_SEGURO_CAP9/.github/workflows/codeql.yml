@@ -1,0 +1,47 @@
+# ================================================================
+#  🚀 codeql.yml — Configuración de GitHub Actions para análisis SAST con CodeQL
+# ================================================================
+# Este workflow escanea automáticamente tu repositorio .NET 
+# usando CodeQL cada vez que haces push a la rama main.
+# ================================================================
+
+name: CodeQL Analysis
+
+on:
+  push:
+    branches: [ main ]
+  pull_request:
+    # Opcional: analiza PRs a main
+    branches: [ main ]
+  schedule:
+    - cron: '0 0 * * 0'  # Ejecuta semanalmente (domingo a medianoche)
+
+jobs:
+  analyze:
+    name: Analyze
+    runs-on: ubuntu-latest
+
+    permissions:
+      actions: read
+      contents: read
+      security-events: write
+
+    strategy:
+      fail-fast: false
+      matrix:
+        language: [ 'csharp' ]
+
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v3
+
+      - name: Initialize CodeQL
+        uses: github/codeql-action/init@v2
+        with:
+          languages: ${{ matrix.language }}
+
+      - name: Autobuild .NET project
+        uses: github/codeql-action/autobuild@v2
+
+      - name: Perform CodeQL Analysis
+        uses: github/codeql-action/analyze@v2

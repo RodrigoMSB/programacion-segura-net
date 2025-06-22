@@ -1,0 +1,29 @@
+@{
+    // ================================================================
+    //   Login.cshtml — Vista de inicio de sesión (Versión INSEGURA)
+    // ================================================================
+    // Configura el título de la página para el layout principal.
+    // ================================================================
+    ViewData["Title"] = "Login Inseguro";
+}
+
+<!-- ================================================================
+  Contenido de la página de login:
+  - Formulario HTML básico sin validación del lado servidor.
+  - No utiliza Anti-CSRF Token (@Html.AntiForgeryToken).
+  - Campos de entrada no tienen validación de longitud o formato.
+  - Práctica deliberadamente insegura para fines didácticos.
+================================================================ -->
+
+<h2>Login Inseguro</h2>
+
+<form method="post" action="/Account/Login">
+
+    <label>Usuario:</label>
+    <input type="text" name="Nombre" /><br />
+
+    <label>Contraseña:</label>
+    <input type="password" name="Password" /><br />
+
+    <button type="submit">Iniciar Sesión</button>
+</form>

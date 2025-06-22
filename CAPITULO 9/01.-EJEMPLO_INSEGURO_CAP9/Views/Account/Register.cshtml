@@ -1,0 +1,30 @@
+@{
+    // ================================================================
+    //   Register.cshtml — Vista de registro de usuario (Versión INSEGURA)
+    // ================================================================
+    // Configura el título de la página para el layout principal.
+    // ================================================================
+    ViewData["Title"] = "Registro Inseguro";
+}
+
+<!-- ================================================================
+  Contenido de la página de registro:
+  - Formulario HTML básico para registrar un usuario.
+  - No incluye Anti-CSRF Token (@Html.AntiForgeryToken).
+  - No valida entrada ni aplica restricciones de longitud o formato.
+  - La contraseña se envía en texto claro y se guarda sin hash.
+  - Ejemplo intencionalmente vulnerable para fines educativos.
+================================================================ -->
+
+<h2>Registro Inseguro</h2>
+
+<form method="post" action="/Account/Register">
+
+    <label>Usuario:</label>
+    <input type="text" name="Nombre" /><br />
+
+    <label>Contraseña:</label>
+    <input type="password" name="Password" /><br />
+
+    <button type="submit">Registrar</button>
+</form>

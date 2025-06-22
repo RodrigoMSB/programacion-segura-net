@@ -1,0 +1,85 @@
+# --------------------------------------------------------------------------------------------
+# 📄 pipeline_seguro.yml — Versión SEGURA de flujo CI/CD con prácticas reforzadas.
+# --------------------------------------------------------------------------------------------
+
+# 📌 Nombre descriptivo para el workflow en GitHub Actions.
+name: CI/CD Seguro
+
+# --------------------------------------------------------------------------------------------
+# 📌 Evento que dispara este pipeline:
+# - Se ejecuta cada vez que hay un push a la rama main.
+# - Idealmente se complementa con PRs y revisiones de código para mayor control.
+on:
+  push:
+    branches:
+      - main
+
+# --------------------------------------------------------------------------------------------
+# 📌 Definición del job principal que realiza build, firma, escaneo y despliegue.
+jobs:
+  build-and-deploy:
+    # 📌 Ambiente de ejecución: Ubuntu actualizado.
+    runs-on: ubuntu-latest
+
+    # ----------------------------------------------------------------------------------------
+    # ✅ BUENA PRÁCTICA:
+    # Evitar definir secretos directamente aquí.
+    # Usar GitHub Secrets o integrar Azure Key Vault para gestionar claves de forma segura.
+    env:
+      # Intencionalmente vacío: las credenciales se gestionan en Secrets externos.
+
+    # ----------------------------------------------------------------------------------------
+    # 📌 Lista de pasos del pipeline, ejecutados en orden secuencial.
+    steps:
+    # ----------------------------------------------------------------------------------------
+    # 📌 Paso 1: Obtener el código fuente desde el repositorio.
+    - name: Checkout código
+      uses: actions/checkout@v4
+
+    # ----------------------------------------------------------------------------------------
+    # 📌 Paso 2: Restaurar dependencias de NuGet.
+    - name: Restaurar dependencias
+      run: dotnet restore
+
+    # ----------------------------------------------------------------------------------------
+    # 📌 Paso 3: Compilar el proyecto en modo Release.
+    - name: Compilar proyecto
+      run: dotnet build --configuration Release
+
+    # ----------------------------------------------------------------------------------------
+    # 📌 Paso 4: Publicar el artefacto compilado en la carpeta /publish.
+    - name: Publicar artefacto
+      run: dotnet publish --configuration Release --output ./publish
+
+    # ----------------------------------------------------------------------------------------
+    # 📌 Paso 5: Firmar artefactos (simulado para la demo).
+    # ✅ BUENA PRÁCTICA: En producción, reemplazar por una herramienta de firma real
+    # como SignTool o Azure Artifacts Signing.
+    - name: Firmar artefactos (simulado)
+      run: echo "Simular firma de artefactos - usar herramienta real en producción."
+
+    # ----------------------------------------------------------------------------------------
+    # 📌 Paso 6: Escanear dependencias NuGet en busca de vulnerabilidades conocidas.
+    # ✅ BUENA PRÁCTICA: Identificar paquetes inseguros antes de desplegar.
+    - name: Escanear dependencias
+      run: dotnet list package --vulnerable
+
+    # ----------------------------------------------------------------------------------------
+    # 📌 Paso 7: Construir imagen Docker con etiqueta versionada.
+    - name: Construir imagen Docker
+      run: |
+        docker build -t mysecureapp:latest .
+
+    # ----------------------------------------------------------------------------------------
+    # 📌 Paso 8: Escanear la imagen Docker usando Trivy.
+    # ✅ BUENA PRÁCTICA: Verificar capas base y dependencias del contenedor.
+    - name: Escanear imagen Docker con Trivy
+      uses: aquasecurity/trivy-action@v0.12.0
+      with:
+        image-ref: mysecureapp:latest
+
+    # ----------------------------------------------------------------------------------------
+    # 📌 Paso 9: Desplegar con revisión manual (simulado).
+    # ✅ BUENA PRÁCTICA: Incorporar aprobaciones manuales o gates de seguridad antes del despliegue final.
+    - name: Desplegar con revisión manual (simulado)
+      run: echo "Simular paso de despliegue con aprobación manual"

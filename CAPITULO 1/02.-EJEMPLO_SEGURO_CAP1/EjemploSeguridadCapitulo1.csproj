@@ -1,0 +1,47 @@
+<!-- 
+  ================================================================
+  EjemploSeguridadCapitulo1.csproj — Archivo de configuración del proyecto
+  ================================================================
+  Define:
+  - El SDK base usado (Microsoft.NET.Sdk.Web para aplicaciones web)
+  - Las propiedades globales del proyecto (.NET 8, nullables, usings implícitos)
+  - Los paquetes NuGet requeridos para Swagger y EF Core InMemory
+  ================================================================
+-->
+
+<Project Sdk="Microsoft.NET.Sdk.Web">
+
+  <!-- 
+    PropertyGroup: define propiedades clave de compilación 
+    y configuración del comportamiento general del proyecto.
+  -->
+  <PropertyGroup>
+    <!-- Versión de .NET usada como framework objetivo -->
+    <TargetFramework>net8.0</TargetFramework>
+
+    <!-- Habilita la verificación de valores null en tiempo de compilación -->
+    <Nullable>enable</Nullable>
+
+    <!-- Habilita importaciones automáticas comunes de .NET (System, LINQ, etc.) -->
+    <ImplicitUsings>enable</ImplicitUsings>
+
+    <!-- Indica al compilador que genere un archivo XML de documentación -->
+    <GenerateDocumentationFile>true</GenerateDocumentationFile>
+
+    <!-- Silencia la advertencia CS1591: falta de comentarios XML en elementos públicos -->
+    <NoWarn>1591</NoWarn>
+  </PropertyGroup>
+
+  <!-- 
+    ItemGroup: lista de paquetes NuGet requeridos por el proyecto.
+    Cada PackageReference define una dependencia externa.
+  -->
+  <ItemGroup>
+    <!-- Paquete Swashbuckle: habilita Swagger para documentación y pruebas interactivas -->
+    <PackageReference Include="Swashbuckle.AspNetCore" Version="6.5.0" />
+
+    <!-- Proveedor EF Core InMemory: simula una base de datos para desarrollo y pruebas sin motor físico -->
+    <PackageReference Include="Microsoft.EntityFrameworkCore.InMemory" Version="8.0.3" />
+  </ItemGroup>
+
+</Project>

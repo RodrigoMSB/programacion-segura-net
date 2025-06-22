@@ -1,0 +1,108 @@
+{
+  "info": {
+    "name": "02.-EJEMPLO_SEGURO_CAP3 (ESPA\u00d1OL)",
+    "schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json"
+  },
+  "item": [
+    {
+      "name": "Crear Usuario (Seguro)",
+      "request": {
+        "method": "POST",
+        "header": [
+          {
+            "key": "Content-Type",
+            "value": "application/json"
+          }
+        ],
+        "body": {
+          "mode": "raw",
+          "raw": "{\n    \"id\": 1,\n    \"nombre\": \"UsuarioSeguro\",\n    \"clave\": \"password123\",\n    \"rol\": \"User\"\n}"
+        },
+        "url": {
+          "raw": "http://localhost:5000/usuario/crear",
+          "protocol": "http",
+          "host": [
+            "localhost"
+          ],
+          "port": "5000",
+          "path": [
+            "usuario",
+            "crear"
+          ]
+        }
+      }
+    },
+    {
+      "name": "Obtener Todos los Usuarios (Rol V\u00e1lido)",
+      "request": {
+        "method": "GET",
+        "header": [
+          {
+            "key": "rol",
+            "value": "User"
+          }
+        ],
+        "url": {
+          "raw": "http://localhost:5000/usuario/todos",
+          "protocol": "http",
+          "host": [
+            "localhost"
+          ],
+          "port": "5000",
+          "path": [
+            "usuario",
+            "todos"
+          ]
+        }
+      }
+    },
+    {
+      "name": "Obtener Secreto (Rol Admin)",
+      "request": {
+        "method": "GET",
+        "header": [
+          {
+            "key": "rol",
+            "value": "Admin"
+          }
+        ],
+        "url": {
+          "raw": "http://localhost:5000/usuario/secreto",
+          "protocol": "http",
+          "host": [
+            "localhost"
+          ],
+          "port": "5000",
+          "path": [
+            "usuario",
+            "secreto"
+          ]
+        }
+      }
+    },
+    {
+      "name": "Obtener Secreto (Rol Inv\u00e1lido)",
+      "request": {
+        "method": "GET",
+        "header": [
+          {
+            "key": "rol",
+            "value": "User"
+          }
+        ],
+        "url": {
+          "raw": "http://localhost:5000/usuario/secreto",
+          "protocol": "http",
+          "host": [
+            "localhost"
+          ],
+          "port": "5000",
+          "path": [
+            "usuario",
+            "secreto"
+          ]
+        }
+      }
+    }
+  ]
+}

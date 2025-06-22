@@ -1,0 +1,68 @@
+# --------------------------------------------------------------------------------------------
+# 📄 pipeline_inseguro.yml — Ejemplo de pipeline CI/CD con malas prácticas intencionales.
+# --------------------------------------------------------------------------------------------
+
+# 📌 Nombre del workflow mostrado en GitHub Actions.
+name: CI/CD Inseguro
+
+# 📌 Evento que dispara el pipeline:
+# ❌ MALA PRÁCTICA: Se ejecuta directamente en cada push a la rama main,
+# sin revisiones de PR ni revisiones manuales.
+on:
+  push:
+    branches:
+      - main
+
+# --------------------------------------------------------------------------------------------
+# 📌 Definición de los jobs que se ejecutan en este pipeline.
+jobs:
+  build-and-deploy:
+    # 📌 Ambiente de ejecución: máquina virtual Ubuntu.
+    runs-on: ubuntu-latest
+
+    # ----------------------------------------------------------------------------------------
+    # ❌ MALA PRÁCTICA: Variables de entorno con secretos hardcodeados dentro del archivo YAML.
+    # Esto expone credenciales sensibles (cadena de conexión de base de datos y contraseña de Docker Hub).
+    env:
+      CONNECTION_STRING: "Server=myserver;Database=mydb;User Id=admin;Password=SuperSecret123;"
+      DOCKER_PASSWORD: "dockerhubplaintextpassword"
+
+    steps:
+    # ----------------------------------------------------------------------------------------
+    # 📌 Paso 1: Obtener el código fuente desde el repositorio.
+    - name: Checkout código
+      uses: actions/checkout@v4
+
+    # ----------------------------------------------------------------------------------------
+    # 📌 Paso 2: Restaurar dependencias de NuGet.
+    - name: Restaurar dependencias
+      run: dotnet restore
+
+    # ----------------------------------------------------------------------------------------
+    # 📌 Paso 3: Compilar el proyecto en modo Release.
+    - name: Compilar proyecto
+      run: dotnet build --configuration Release
+
+    # ----------------------------------------------------------------------------------------
+    # 📌 Paso 4: Publicar el artefacto compilado.
+    # ❌ MALA PRÁCTICA: No se realiza firma de artefactos ni validación de integridad.
+    - name: Publicar artefacto
+      run: dotnet publish --configuration Release --output ./publish
+
+    # ----------------------------------------------------------------------------------------
+    # 📌 Paso 5: Construir y subir la imagen Docker.
+    # ❌ MALA PRÁCTICA: No se escanea la imagen por vulnerabilidades antes de subirla.
+    # ❌ MALA PRÁCTICA: Login a Docker Hub usando contraseña plana desde variable de entorno insegura.
+    - name: Construir imagen Docker
+      run: |
+        docker build -t myinsecureapp:latest .
+        echo $DOCKER_PASSWORD | docker login --username myuser --password-stdin
+        docker push myinsecureapp:latest
+
+    # ----------------------------------------------------------------------------------------
+    # 📌 Paso 6: Desplegar en servidor de producción.
+    # ❌ MALA PRÁCTICA: Despliegue directo sin pasos de revisión ni aprobaciones manuales.
+    # ❌ MALA PRÁCTICA: Uso de SSH con comandos directos sin hardening ni control de acceso robusto.
+    - name: Desplegar en servidor de producción
+      run: |
+        ssh user@prod-server 'docker pull myinsecureapp:latest && docker stop myinsecureapp && docker rm myinsecureapp && docker run -d --name myinsecureapp myinsecureapp:latest'
