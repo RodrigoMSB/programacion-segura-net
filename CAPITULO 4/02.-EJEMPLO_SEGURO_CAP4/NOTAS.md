@@ -20,7 +20,7 @@ Combina herramientas propias de .NET Core con una librería externa para garanti
   Ejemplo: verificar complejidad de la contraseña (mayúsculas, minúsculas, números).
 
 - ✅ **Validación de `ModelState` en el controlador:**
-  Antes de ejecutar cualquier lógica de negocio, el controlador comprueba si todos los datos cumplen con las reglas.
+  Antes de invocar cualquier lógica de negocio, el controlador comprueba si todos los datos cumplen con las reglas.
 
 - ✅ **Rechazo de entradas inválidas:**
   Si los datos no cumplen las reglas, la API responde con un `400 Bad Request` y detalles claros de los errores.

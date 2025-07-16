@@ -1,0 +1,203 @@
+{
+  "info": {
+    "_postman_id": "f2a43e7e-c8d1-4b6e-bd3d-123456789abc",
+    "name": "SEGURIDAD_BANCO_FINAL",
+    "schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json"
+  },
+  "item": [
+    {
+      "name": "Auth",
+      "item": [
+        {
+          "name": "Register Admin",
+          "request": {
+            "method": "POST",
+            "header": [],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"nombre\": \"Admin General\",\n  \"email\": \"admin@banco.com\",\n  \"password\": \"Admin123!\",\n  \"rol\": \"Admin\"\n}"
+            },
+            "url": {
+              "raw": "{{baseUrl}}/auth/register",
+              "host": ["{{baseUrl}}"],
+              "path": ["auth", "register"]
+            }
+          }
+        },
+        {
+          "name": "Register Cliente",
+          "request": {
+            "method": "POST",
+            "header": [],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"nombre\": \"Juan Perez\",\n  \"email\": \"juan@banco.com\",\n  \"password\": \"Cliente123!\",\n  \"rol\": \"Cliente\"\n}"
+            },
+            "url": {
+              "raw": "{{baseUrl}}/auth/register",
+              "host": ["{{baseUrl}}"],
+              "path": ["auth", "register"]
+            }
+          }
+        },
+        {
+          "name": "Login Admin",
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "exec": [
+                  "pm.environment.set(\"tokenAdmin\", pm.response.json().token);"
+                ],
+                "type": "text/javascript"
+              }
+            }
+          ],
+          "request": {
+            "method": "POST",
+            "header": [],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"email\": \"admin@banco.com\",\n  \"password\": \"Admin123!\"\n}"
+            },
+            "url": {
+              "raw": "{{baseUrl}}/auth/login",
+              "host": ["{{baseUrl}}"],
+              "path": ["auth", "login"]
+            }
+          }
+        },
+        {
+          "name": "Login Cliente",
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "exec": [
+                  "pm.environment.set(\"tokenCliente\", pm.response.json().token);"
+                ],
+                "type": "text/javascript"
+              }
+            }
+          ],
+          "request": {
+            "method": "POST",
+            "header": [],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"email\": \"juan@banco.com\",\n  \"password\": \"Cliente123!\"\n}"
+            },
+            "url": {
+              "raw": "{{baseUrl}}/auth/login",
+              "host": ["{{baseUrl}}"],
+              "path": ["auth", "login"]
+            }
+          }
+        }
+      ]
+    },
+    {
+      "name": "Cliente - Flujos",
+      "item": [
+        {
+          "name": "Consultar Mis Cuentas",
+          "request": {
+            "method": "GET",
+            "header": [
+              {
+                "key": "Authorization",
+                "value": "Bearer {{tokenCliente}}"
+              }
+            ],
+            "url": {
+              "raw": "{{baseUrl}}/cuentas/mis-cuentas",
+              "host": ["{{baseUrl}}"],
+              "path": ["cuentas", "mis-cuentas"]
+            }
+          }
+        },
+        {
+          "name": "Enviar Transferencia",
+          "request": {
+            "method": "POST",
+            "header": [
+              {
+                "key": "Authorization",
+                "value": "Bearer {{tokenCliente}}"
+              },
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"cuentaOrigenId\": 1,\n  \"cuentaDestinoId\": 2,\n  \"monto\": 100.5,\n  \"descripcion\": \"Pago de servicio\"\n}"
+            },
+            "url": {
+              "raw": "{{baseUrl}}/transferencias/enviar",
+              "host": ["{{baseUrl}}"],
+              "path": ["transferencias", "enviar"]
+            }
+          }
+        },
+        {
+          "name": "Ver Mis Movimientos",
+          "request": {
+            "method": "GET",
+            "header": [
+              {
+                "key": "Authorization",
+                "value": "Bearer {{tokenCliente}}"
+              }
+            ],
+            "url": {
+              "raw": "{{baseUrl}}/movimientos/mis-movimientos",
+              "host": ["{{baseUrl}}"],
+              "path": ["movimientos", "mis-movimientos"]
+            }
+          }
+        }
+      ]
+    },
+    {
+      "name": "Admin - Flujos",
+      "item": [
+        {
+          "name": "Listar Usuarios",
+          "request": {
+            "method": "GET",
+            "header": [
+              {
+                "key": "Authorization",
+                "value": "Bearer {{tokenAdmin}}"
+              }
+            ],
+            "url": {
+              "raw": "{{baseUrl}}/admin/usuarios",
+              "host": ["{{baseUrl}}"],
+              "path": ["admin", "usuarios"]
+            }
+          }
+        },
+        {
+          "name": "Ver Todos los Movimientos",
+          "request": {
+            "method": "GET",
+            "header": [
+              {
+                "key": "Authorization",
+                "value": "Bearer {{tokenAdmin}}"
+              }
+            ],
+            "url": {
+              "raw": "{{baseUrl}}/admin/movimientos",
+              "host": ["{{baseUrl}}"],
+              "path": ["admin", "movimientos"]
+            }
+          }
+        }
+      ]
+    }
+  ]
+}

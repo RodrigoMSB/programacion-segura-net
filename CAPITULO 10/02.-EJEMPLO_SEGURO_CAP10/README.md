@@ -87,4 +87,4 @@ docker run -p 8080:80 mysecureapp
 
 Este flujo muestra cómo un enfoque **DevSecOps** sólido mejora la seguridad de extremo a extremo.
 
-**Adáptalo, evoluciona y conviértelo en parte de tu cultura de desarrollo.** 🔐✨🚀
+**Adáptalo, evoluciona y conviértelo en parte de tu cultura de desarrollo.** 

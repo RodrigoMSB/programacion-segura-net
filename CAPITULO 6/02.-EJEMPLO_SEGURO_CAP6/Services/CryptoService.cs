@@ -150,15 +150,70 @@ namespace EjemploSeguroCapitulo6.Services
         /// <returns>Cadena Base64 con IV + ciphertext.</returns>
         public string Encrypt(string plainText, byte[] key)
         {
+            // --------------------------------------------
+            // Crear una instancia del algoritmo AES.
+            // AES.Create() devuelve un objeto configurado con valores seguros por defecto.
+            // --------------------------------------------
             using var aes = Aes.Create();
 
+            // --------------------------------------------
+            // Asignar la clave de 32 bytes (AES-256).
+            // La misma clave deberá usarse para descifrar.
+            // --------------------------------------------
             aes.Key = key;
+
+            // --------------------------------------------
+            // Generar un IV (Vector de Inicialización) aleatorio.
+            // El IV asegura que el mismo texto cifrado dos veces produzca resultados distintos.
+            // --------------------------------------------
             aes.GenerateIV();
 
+            // --------------------------------------------
+            // Crear el objeto cifrador (encryptor) con la clave y el IV actuales.
+            // Este objeto se encargará de aplicar el cifrado sobre los datos.
+            // --------------------------------------------
             using var encryptor = aes.CreateEncryptor();
 
+            // --------------------------------------------
+            // Convertir el texto claro a un arreglo de bytes.
+            // AES opera sobre datos binarios, no sobre strings directamente.
+            // --------------------------------------------
             byte[] plainBytes = Encoding.UTF8.GetBytes(plainText);
+
+            // --------------------------------------------
+            // Aplicar el cifrado al bloque de datos.
+            // --------------------------------------------
+            // AES en .NET usa el modelo de cifrado por bloques. El método
+            // TransformFinalBlock() recibe los datos en claro como un arreglo de bytes
+            // y devuelve un nuevo arreglo de bytes con el contenido cifrado.
+            //
+            // Parámetros:
+            // - plainBytes: el array de bytes que representa el texto claro a cifrar.
+            // - 0: posición inicial en el array (inicio).
+            // - plainBytes.Length: número de bytes a procesar (todo el contenido).
+            //
+            // Características clave:
+            // - Procesa TODO el bloque de datos en una sola llamada.
+            // - Maneja automáticamente el relleno (padding) necesario para cumplir
+            //   con el tamaño de bloque de AES (16 bytes por bloque).
+            // - Devuelve el contenido cifrado listo para almacenamiento o transmisión.
+            //
+            // Ejemplo conceptual:
+            // Input  -> "HolaMundo" (bytes)
+            // Output -> [cifrado en bytes incomprensibles]
+            //
+            // Seguridad:
+            // - Sin la clave y el IV correctos, el contenido cifrado no puede revertirse
+            //   a su forma original.
+            //
+            // Resultado:
+            // - cipherBytes contendrá los datos cifrados, que se combinarán con el IV
+            //   para el almacenamiento seguro.
+            //
+            // Código:
+            // --------------------------------------------
             byte[] cipherBytes = encryptor.TransformFinalBlock(plainBytes, 0, plainBytes.Length);
+
 
             // -------------------------------------------------------------------------
             // COMBINAR IV + CIPHERTEXT EN UN SOLO ARRAY
@@ -201,12 +256,12 @@ namespace EjemploSeguroCapitulo6.Services
         ///   Es esencial para la operación segura del descifrado, pero no es secreto.
         /// 
         /// Flujo detallado del proceso:
-        /// 1️⃣ El método recibe una cadena en Base64 que incluye IV + ciphertext.
-        /// 2️⃣ Decodifica el Base64 para recuperar los bytes reales.
-        /// 3️⃣ Extrae el IV de los primeros bytes del array combinado.
-        /// 4️⃣ Usa la clave proporcionada y el IV para inicializar el descifrador AES.
-        /// 5️⃣ Aplica el descifrado para obtener los bytes originales del texto claro.
-        /// 6️⃣ Convierte el resultado a UTF-8 y lo devuelve.
+        /// 1 El método recibe una cadena en Base64 que incluye IV + ciphertext.
+        /// 2 Decodifica el Base64 para recuperar los bytes reales.
+        /// 3 Extrae el IV de los primeros bytes del array combinado.
+        /// 4 Usa la clave proporcionada y el IV para inicializar el descifrador AES.
+        /// 5 Aplica el descifrado para obtener los bytes originales del texto claro.
+        /// 6 Convierte el resultado a UTF-8 y lo devuelve.
         /// 
         /// Notas de seguridad:
         /// - Sin el IV correcto, el descifrado fallará o generará datos corruptos.
@@ -227,38 +282,95 @@ namespace EjemploSeguroCapitulo6.Services
             using var aes = Aes.Create();
             aes.Key = key;
 
-            // -------------------------------------------------------
+            // ---------------------------------------------------------------
             // 2️⃣ Extraer el IV del inicio del array combinado.
-            //    El IV fue almacenado en los primeros N bytes durante Encrypt().
-            //    AES.BlockSize está en bits, así que se divide por 8 para bytes.
-            // -------------------------------------------------------
-            byte[] iv = new byte[aes.BlockSize / 8];
-            byte[] cipherBytes = new byte[combined.Length - iv.Length];
+            // ---------------------------------------------------------------
+            // Cuando ciframos en el método Encrypt, combinamos IV + ciphertext
+            // en un solo array. Aquí, para descifrar, debemos separar de nuevo
+            // esos componentes.
+            //
+            // AES.BlockSize indica el tamaño del bloque en BITS (128 bits por defecto),
+            // por eso se divide por 8 para obtener bytes (16 bytes para AES).
+            //
+            // Por ejemplo:
+            //   combined = [IV (16 bytes) | Ciphertext (variable)]
+            //
+            // - IV: Necesario para inicializar correctamente el descifrador AES.
+            //   Es único por mensaje pero NO SECRETO. Permite que se pueda descifrar
+            //   correctamente incluso si se transmite junto con el ciphertext.
+            //
+            // - Ciphertext: Los datos cifrados reales que se quieren recuperar.
+            //
+            // Proceso detallado:
+            // ---------------------------------------------------------------
+            byte[] iv = new byte[aes.BlockSize / 8];                   // Reservamos espacio para el IV (16 bytes).
+            byte[] cipherBytes = new byte[combined.Length - iv.Length]; // Reservamos espacio para el ciphertext restante.
 
+            // Copiar el IV desde el inicio del array combinado.
+            //   combined: [IV | Ciphertext]
+            //   Resultado: iv = combined[0 .. 15]
             Buffer.BlockCopy(combined, 0, iv, 0, iv.Length);
+
+            // Copiar el ciphertext desde la posición siguiente al IV.
+            //   combined: [IV | Ciphertext]
+            //   Resultado: cipherBytes = combined[16 .. end]
             Buffer.BlockCopy(combined, iv.Length, cipherBytes, 0, cipherBytes.Length);
 
+            // ---------------------------------------------------------------
+            // En resumen:
+            //   - iv: contiene el Vector de Inicialización usado en el cifrado original.
+            //   - cipherBytes: contiene los datos cifrados reales.
+            //
+            // Al extraer correctamente ambos, podemos inicializar AES
+            // con la misma configuración para descifrar con éxito.
+            // ---------------------------------------------------------------
+
             // -------------------------------------------------------
-            // 3️⃣ Configurar el IV extraído en la instancia de AES.
-            //    Es esencial usar exactamente el mismo IV para descifrar.
+            // Configurar el IV extraído en la instancia de AES.
+            // Es esencial usar exactamente el mismo IV para descifrar.
             // -------------------------------------------------------
             aes.IV = iv;
 
             // -------------------------------------------------------
-            // 4️⃣ Crear el objeto descifrador con la clave y el IV.
-            //    Permite aplicar la operación inversa del cifrado.
+            // Crear el objeto descifrador con la clave y el IV.
+            // Permite aplicar la operación inversa del cifrado.
             // -------------------------------------------------------
             using var decryptor = aes.CreateDecryptor();
 
-            // -------------------------------------------------------
+            // ---------------------------------------------------------------
             // 5️⃣ Aplicar el descifrado al bloque de ciphertext.
-            //    Obtiene los bytes originales del texto claro.
-            // -------------------------------------------------------
+            // ---------------------------------------------------------------
+            // Aquí usamos el objeto `decryptor`, configurado previamente con:
+            //   - La clave AES (misma usada en el cifrado original)
+            //   - El IV extraído del mensaje cifrado
+            //
+            // AES en .NET expone el método TransformFinalBlock:
+            //   - Toma un array de bytes de entrada (cipherBytes)
+            //   - Devuelve el array de bytes descifrados (plainBytes)
+            //
+            // Proceso detallado:
+            //   - AES usa la clave y el IV para "desenrollar" el cifrado.
+            //   - Aplica la operación inversa del cifrado de bloque.
+            //   - Devuelve los datos originales en claro tal cual fueron
+            //     antes de ser cifrados.
+            //
+            // Ejemplo conceptual:
+            //   - Entrada: ciphertext en bytes.
+            //   - Salida: texto plano en bytes.
+            //
+            // Seguridad:
+            //   - Solo quien posea la clave correcta puede descifrar.
+            //   - IV garantiza unicidad, pero la clave asegura confidencialidad.
+            //
+            // Resultado final:
+            //   - plainBytes contiene los datos originales,
+            //     listos para ser convertidos de vuelta a string (UTF-8).
+            // ---------------------------------------------------------------
             byte[] plainBytes = decryptor.TransformFinalBlock(cipherBytes, 0, cipherBytes.Length);
 
             // -------------------------------------------------------
-            // 6️⃣ Convertir los bytes resultantes en un string UTF-8.
-            //    Devuelve el texto claro original al consumidor.
+            // Convertir los bytes resultantes en un string UTF-8.
+            // Devuelve el texto claro original al consumidor.
             // -------------------------------------------------------
             return Encoding.UTF8.GetString(plainBytes);
         }
