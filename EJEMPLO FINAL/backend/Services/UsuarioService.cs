@@ -1,23 +1,53 @@
-using SeguridadBancoFinal.Data;
-using SeguridadBancoFinal.Models;
-using Microsoft.EntityFrameworkCore;
+// ===============================================================================================
+// UsuarioService.cs — Servicio para Gestión de Usuarios
+// ===============================================================================================
+// Este servicio implementa la lógica de negocio relacionada con:
+// - Registro y autenticación de usuarios.
+// - Creación de cuentas bancarias asociadas.
+// - Consulta de usuarios y sus cuentas.
+//
+// Encapsula todas las operaciones sobre la entidad Usuario y sus relaciones
+// (CuentaBancaria), aplicando criptografía segura para credenciales.
+//
+// Este diseño sigue el principio de responsabilidad única y desacopla
+// la lógica de negocio del controlador o la capa de presentación.
+//
+// ===============================================================================================
+
+// -----------------------------------------------------------------------------------------------
+// IMPORTS — Dependencias esenciales para acceso a datos y operaciones criptográficas.
+// -----------------------------------------------------------------------------------------------
+using SeguridadBancoFinal.Data;                     // Contexto de base de datos (Entity Framework).
+using SeguridadBancoFinal.Models;                   // Entidades del dominio (Usuario, CuentaBancaria).
+using Microsoft.EntityFrameworkCore;                // EF Core para consultas con Include y seguimiento.
 
 namespace SeguridadBancoFinal.Services
 {
+    /// <summary>
+    /// Servicio que encapsula toda la lógica relacionada a usuarios del sistema.
+    /// Incluye registro seguro, login, consultas y creación de cuentas bancarias.
+    /// </summary>
     public class UsuarioService : IUsuarioService
     {
         private readonly ApplicationDbContext _context;
         private readonly CryptoService _crypto;
 
+        /// <summary>
+        /// Constructor con inyección de dependencias.
+        /// </summary>
         public UsuarioService(ApplicationDbContext context, CryptoService crypto)
         {
             _context = context;
             _crypto = crypto;
         }
 
-        // =======================================
+        // =======================================================================================
         // REGISTRAR NUEVO USUARIO
-        // =======================================
+        // =======================================================================================
+
+        /// <summary>
+        /// Registra un nuevo usuario, aplicando hash seguro a la contraseña.
+        /// </summary>
         public Usuario RegistrarUsuario(string nombre, string email, string passwordPlano, string rol = "Cliente")
         {
             if (_context.Usuarios.Any(u => u.Email == email))
@@ -40,6 +70,9 @@ namespace SeguridadBancoFinal.Services
             return nuevoUsuario;
         }
 
+        /// <summary>
+        /// Crea un cliente sin contraseña (por ejemplo, creado por un admin).
+        /// </summary>
         public Usuario CrearClienteSinPassword(string nombre, string email)
         {
             var usuario = new Usuario
@@ -56,6 +89,9 @@ namespace SeguridadBancoFinal.Services
             return usuario;
         }
 
+        /// <summary>
+        /// Asigna una contraseña a un cliente previamente creado sin ella.
+        /// </summary>
         public void CompletarRegistroCliente(string email, string password)
         {
             var usuario = _context.Usuarios.FirstOrDefault(u => u.Email == email);
@@ -73,6 +109,10 @@ namespace SeguridadBancoFinal.Services
             _context.SaveChanges();
         }
 
+        /// <summary>
+        /// Variante redundante de CompletarRegistroCliente.
+        /// ❗ Se sugiere mantener solo una versión.
+        /// </summary>
         public Usuario CompletarRegistro(string email, string passwordPlano)
         {
             var usuario = _context.Usuarios.SingleOrDefault(u => u.Email == email);
@@ -90,9 +130,16 @@ namespace SeguridadBancoFinal.Services
             _context.SaveChanges();
             return usuario;
         }
-        // =======================================
-        // VALIDAR CREDENCIALES DE LOGIN
-        // =======================================
+
+        // 💡 RECOMENDACIÓN: Unificar `CompletarRegistroCliente` y `CompletarRegistro`.
+
+        // =======================================================================================
+        // VALIDAR LOGIN
+        // =======================================================================================
+
+        /// <summary>
+        /// Valida si el email y contraseña coinciden con un usuario registrado.
+        /// </summary>
         public Usuario? ValidarCredenciales(string email, string passwordPlano)
         {
             var usuario = _context.Usuarios
@@ -101,7 +148,6 @@ namespace SeguridadBancoFinal.Services
             if (usuario == null)
                 return null;
 
-            // Verificar que tenga datos válidos
             if (string.IsNullOrEmpty(usuario.PasswordHash) || string.IsNullOrEmpty(usuario.Salt))
                 return null;
 
@@ -109,6 +155,13 @@ namespace SeguridadBancoFinal.Services
             return valido ? usuario : null;
         }
 
+        // =======================================================================================
+        // CUENTAS
+        // =======================================================================================
+
+        /// <summary>
+        /// Crea una cuenta bancaria para un usuario dado.
+        /// </summary>
         public CuentaBancaria CrearCuentaParaUsuario(int usuarioId, string numeroCuenta, decimal saldoInicial)
         {
             var usuario = _context.Usuarios.FirstOrDefault(u => u.Id == usuarioId);
@@ -128,9 +181,13 @@ namespace SeguridadBancoFinal.Services
             return cuenta;
         }
 
-        // =======================================
-        // OBTENER USUARIO POR ID
-        // =======================================
+        // =======================================================================================
+        // CONSULTAS
+        // =======================================================================================
+
+        /// <summary>
+        /// Busca un usuario por su ID, incluyendo sus cuentas asociadas.
+        /// </summary>
         public Usuario? ObtenerPorId(int id)
         {
             return _context.Usuarios
@@ -138,25 +195,35 @@ namespace SeguridadBancoFinal.Services
                            .FirstOrDefault(u => u.Id == id);
         }
 
-        // =======================================
-        // OBTENER USUARIO POR EMAIL
-        // =======================================
+        /// <summary>
+        /// Busca un usuario por email (sin tracking).
+        /// </summary>
         public Usuario? ObtenerPorEmail(string email)
         {
             return _context.Usuarios
+                           .AsNoTracking()
                            .Include(u => u.Cuentas)
                            .FirstOrDefault(u => u.Email == email);
         }
 
-        // =======================================
-        // LISTAR TODOS LOS USUARIOS (para Admin)
-        // =======================================
+        /// <summary>
+        /// Retorna todos los usuarios con sus cuentas (para uso administrativo).
+        /// </summary>
         public IEnumerable<Usuario> ObtenerTodos()
         {
             return _context.Usuarios
                            .Include(u => u.Cuentas)
                            .AsNoTracking()
                            .ToList();
+        }
+
+        /// <summary>
+        /// Retorna una cuenta por número exacto.
+        /// </summary>
+        public CuentaBancaria? ObtenerCuentaPorNumero(string numeroCuenta)
+        {
+            return _context.CuentasBancarias
+                           .FirstOrDefault(c => c.NumeroCuenta == numeroCuenta);
         }
     }
 }

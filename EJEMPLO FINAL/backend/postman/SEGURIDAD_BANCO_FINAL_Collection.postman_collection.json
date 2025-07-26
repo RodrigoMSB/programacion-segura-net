@@ -1,0 +1,251 @@
+{
+    "info": {
+        "name": "SEGURIDAD_BANCO_FINAL",
+        "_postman_id": "banco-final-collection",
+        "description": "Colecci\u00f3n Postman sincronizada con el backend actualizado",
+        "schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json"
+    },
+    "item": [
+        {
+            "name": "Auth",
+            "item": [
+                {
+                    "name": "Login Cliente",
+                    "request": {
+                        "method": "POST",
+                        "header": [
+                            {
+                                "key": "Content-Type",
+                                "value": "application/json"
+                            }
+                        ],
+                        "body": {
+                            "mode": "raw",
+                            "raw": "{\n    \"email\": \"cliente@banco.com\",\n    \"password\": \"cliente123\"\n}"
+                        },
+                        "url": {
+                            "raw": "{{base_url}}/auth/login",
+                            "host": [
+                                "{{base_url}}"
+                            ],
+                            "path": [
+                                "auth",
+                                "login"
+                            ]
+                        }
+                    }
+                },
+                {
+                    "name": "Login Admin",
+                    "request": {
+                        "method": "POST",
+                        "header": [
+                            {
+                                "key": "Content-Type",
+                                "value": "application/json"
+                            }
+                        ],
+                        "body": {
+                            "mode": "raw",
+                            "raw": "{\n    \"email\": \"admin@banco.com\",\n    \"password\": \"admin123\"\n}"
+                        },
+                        "url": {
+                            "raw": "{{base_url}}/auth/login",
+                            "host": [
+                                "{{base_url}}"
+                            ],
+                            "path": [
+                                "auth",
+                                "login"
+                            ]
+                        }
+                    }
+                },
+                {
+                    "name": "Completar Registro Cliente",
+                    "request": {
+                        "method": "POST",
+                        "header": [
+                            {
+                                "key": "Content-Type",
+                                "value": "application/json"
+                            }
+                        ],
+                        "body": {
+                            "mode": "raw",
+                            "raw": "{\n    \"email\": \"cliente@banco.com\",\n    \"password\": \"cliente123\"\n}"
+                        },
+                        "url": {
+                            "raw": "{{base_url}}/auth/completar-registro",
+                            "host": [
+                                "{{base_url}}"
+                            ],
+                            "path": [
+                                "auth",
+                                "completar-registro"
+                            ]
+                        }
+                    }
+                }
+            ]
+        },
+        {
+            "name": "Cliente - Flujos",
+            "item": [
+                {
+                    "name": "Consultar Mis Cuentas",
+                    "request": {
+                        "method": "GET",
+                        "header": [
+                            {
+                                "key": "Authorization",
+                                "value": "Bearer {{token_cliente}}"
+                            }
+                        ],
+                        "url": {
+                            "raw": "{{base_url}}/cuenta/mis-cuentas",
+                            "host": [
+                                "{{base_url}}"
+                            ],
+                            "path": [
+                                "cuenta",
+                                "mis-cuentas"
+                            ]
+                        }
+                    }
+                },
+                {
+                    "name": "Enviar Transferencia",
+                    "request": {
+                        "method": "POST",
+                        "header": [
+                            {
+                                "key": "Content-Type",
+                                "value": "application/json"
+                            },
+                            {
+                                "key": "Authorization",
+                                "value": "Bearer {{token_cliente}}"
+                            }
+                        ],
+                        "body": {
+                            "mode": "raw",
+                            "raw": "{\n    \"cuentaOrigenId\": 1,\n    \"cuentaDestinoId\": 2,\n    \"monto\": 1000,\n    \"descripcion\": \"Transferencia de prueba\"\n}"
+                        },
+                        "url": {
+                            "raw": "{{base_url}}/transferencia/enviar",
+                            "host": [
+                                "{{base_url}}"
+                            ],
+                            "path": [
+                                "transferencia",
+                                "enviar"
+                            ]
+                        }
+                    }
+                },
+                {
+                    "name": "Ver Mis Movimientos",
+                    "request": {
+                        "method": "GET",
+                        "header": [
+                            {
+                                "key": "Authorization",
+                                "value": "Bearer {{token_cliente}}"
+                            }
+                        ],
+                        "url": {
+                            "raw": "{{base_url}}/transferencia/mis",
+                            "host": [
+                                "{{base_url}}"
+                            ],
+                            "path": [
+                                "transferencia",
+                                "mis"
+                            ]
+                        }
+                    }
+                }
+            ]
+        },
+        {
+            "name": "Admin - Flujos",
+            "item": [
+                {
+                    "name": "Listar Usuarios",
+                    "request": {
+                        "method": "GET",
+                        "header": [
+                            {
+                                "key": "Authorization",
+                                "value": "Bearer {{token_admin}}"
+                            }
+                        ],
+                        "url": {
+                            "raw": "{{base_url}}/admin/usuarios",
+                            "host": [
+                                "{{base_url}}"
+                            ],
+                            "path": [
+                                "admin",
+                                "usuarios"
+                            ]
+                        }
+                    }
+                },
+                {
+                    "name": "Ver Todos los Movimientos",
+                    "request": {
+                        "method": "GET",
+                        "header": [
+                            {
+                                "key": "Authorization",
+                                "value": "Bearer {{token_admin}}"
+                            }
+                        ],
+                        "url": {
+                            "raw": "{{base_url}}/admin/movimientos",
+                            "host": [
+                                "{{base_url}}"
+                            ],
+                            "path": [
+                                "admin",
+                                "movimientos"
+                            ]
+                        }
+                    }
+                },
+                {
+                    "name": "Crear Cuenta (Admin)",
+                    "request": {
+                        "method": "POST",
+                        "header": [
+                            {
+                                "key": "Content-Type",
+                                "value": "application/json"
+                            },
+                            {
+                                "key": "Authorization",
+                                "value": "Bearer {{token_admin}}"
+                            }
+                        ],
+                        "body": {
+                            "mode": "raw",
+                            "raw": "{\n    \"numeroCuenta\": \"10000123\",\n    \"saldo\": 5000,\n    \"usuarioId\": 1\n}"
+                        },
+                        "url": {
+                            "raw": "{{base_url}}/admin/crear-cuenta",
+                            "host": [
+                                "{{base_url}}"
+                            ],
+                            "path": [
+                                "admin",
+                                "crear-cuenta"
+                            ]
+                        }
+                    }
+                }
+            ]
+        }
+    ]
+}
