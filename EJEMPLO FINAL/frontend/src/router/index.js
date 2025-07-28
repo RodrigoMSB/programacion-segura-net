@@ -23,8 +23,16 @@ const routes = [
     component: AdminDashboard,
     children: [
       { path: "usuarios", name: "AdminUsuarios", component: AdminUsuarios },
-      { path: "movimientos", name: "AdminMovimientos", component: AdminMovimientos },
-      { path: "cuentas", name: "AdminCuentas", component: AdminCuentas }
+      {
+        path: "movimientos",
+        name: "AdminMovimientos",
+        component: AdminMovimientos,
+      },
+      { path: "cuentas", name: "AdminCuentas", component: AdminCuentas },
+      {
+        path: "auditorias",name: "AdminAuditoriaCuentas",
+        component: () => import("../views/admin/AuditoriasView.vue"),
+      },
     ],
   },
 
@@ -34,8 +42,11 @@ const routes = [
     component: UserDashboard,
     children: [
       { path: "cuentas", name: "ClienteCuentas", component: ClienteCuentas },
-      { path: "movimientos", name: "ClienteMovimientos", component: ClienteMovimientos },
-      { path: "transferir", name: "ClienteTransferir", component: ClienteTransferir },
+      {
+        path: "transferir",
+        name: "ClienteTransferir",
+        component: ClienteTransferir,
+      },
     ],
   },
 ];

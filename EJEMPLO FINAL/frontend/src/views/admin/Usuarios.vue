@@ -14,9 +14,12 @@
       </div>
     </div>
 
-    <!-- Tabla de Usuarios -->
-    <table v-if="!usuariosStore.loading && usuariosStore.usuarios.length" class="table table-bordered table-hover">
-      <thead class="table-dark">
+    <!-- Tabla de usuarios -->
+    <table
+      v-if="!usuariosStore.loading && usuariosStore.usuarios.length"
+      class="table table-bordered table-hover"
+    >
+      <thead class="table-primary">
         <tr>
           <th>ID</th>
           <th>Nombre</th>
@@ -34,79 +37,69 @@
       </tbody>
     </table>
 
-    <div v-else-if="!usuariosStore.loading && !usuariosStore.usuarios.length" class="text-center text-muted">
+    <div
+      v-else-if="!usuariosStore.loading && !usuariosStore.usuarios.length"
+      class="text-center text-muted"
+    >
       No hay usuarios registrados.
     </div>
 
-    <!-- Formulario para crear nuevo usuario Cliente -->
-    <hr class="my-4" />
-    <h4>Crear nuevo usuario Cliente</h4>
-    <p class="text-muted">
-      Solo se solicita nombre y email. El cliente generará su clave luego mediante Registro.
-    </p>
-    <form @submit.prevent="crearCliente">
-      <div class="row g-3">
-        <div class="col-md-5">
-          <input
-            v-model="nuevoCliente.nombre"
-            type="text"
-            class="form-control"
-            placeholder="Nombre completo"
-            required
-          />
+    <!-- Formulario crear cliente -->
+    <div class="card p-4 mt-4 shadow-sm">
+      <h4 class="mb-3">Crear Nuevo Cliente</h4>
+      <p class="text-muted mb-4">
+        Solo se solicita nombre y correo. El cliente generará su contraseña posteriormente mediante su propio registro.
+      </p>
+      <form @submit.prevent="crearCliente">
+        <div class="row g-3">
+          <div class="col-md-5">
+            <label class="form-label">Nombre completo</label>
+            <input
+              v-model="nuevoCliente.nombre"
+              type="text"
+              class="form-control"
+              required
+            />
+          </div>
+          <div class="col-md-5">
+            <label class="form-label">Correo electrónico</label>
+            <input
+              v-model="nuevoCliente.email"
+              type="email"
+              class="form-control"
+              required
+            />
+          </div>
+          <div class="col-md-2 d-flex align-items-end">
+            <button type="submit" class="btn btn-success w-100">
+              Crear
+            </button>
+          </div>
         </div>
-        <div class="col-md-5">
-          <input
-            v-model="nuevoCliente.email"
-            type="email"
-            class="form-control"
-            placeholder="Correo electrónico"
-            required
-          />
-        </div>
-        <div class="col-md-2">
-          <button type="submit" class="btn btn-success w-100">Crear Cliente</button>
-        </div>
-      </div>
-    </form>
+      </form>
+    </div>
   </div>
 </template>
 
 <script setup>
-/**
- * Importaciones
- */
 import { ref, onMounted } from 'vue'
 import { useUsuariosStore } from '@/store/usuarios'
 
-/**
- * Inicializar el store de usuarios
- */
 const usuariosStore = useUsuariosStore()
 
-/**
- * Modelo para el nuevo cliente a crear
- */
 const nuevoCliente = ref({
   nombre: '',
   email: ''
 })
 
-/**
- * Función para crear un nuevo cliente (solo nombre y email)
- */
 const crearCliente = async () => {
   await usuariosStore.crearCliente({
     nombre: nuevoCliente.value.nombre,
     email: nuevoCliente.value.email
-  });
-  // Resetear el formulario
+  })
   nuevoCliente.value = { nombre: '', email: '' }
 }
 
-/**
- * Al montar el componente, cargar la lista de usuarios
- */
 onMounted(() => {
   usuariosStore.cargarUsuarios()
 })

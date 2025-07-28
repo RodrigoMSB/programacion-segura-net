@@ -15,7 +15,7 @@ export const useClienteCuentasStore = defineStore('clienteCuentas', () => {
     error.value = '';
 
     try {
-      const response = await api.get('/cuenta/saldo', {
+      const response = await api.get('/cuenta/mis-cuentas', {
         headers: {
           Authorization: `Bearer ${authStore.token}`
         }

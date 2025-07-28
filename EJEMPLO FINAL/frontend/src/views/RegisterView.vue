@@ -53,15 +53,6 @@
                 />
               </div>
 
-              <div class="mb-3">
-                <label for="rol" class="form-label">Rol</label>
-                <select v-model="form.rol" id="rol" class="form-select" required>
-                  <option disabled value="">Seleccione un rol</option>
-                  <option value="Admin">Administrador</option>
-                  <option value="Cliente">Cliente</option>
-                </select>
-              </div>
-
               <button
                 type="submit"
                 class="btn btn-primary w-100"

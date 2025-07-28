@@ -73,11 +73,18 @@ const handleLogin = async () => {
     const token = response.data.token
     const decoded = jwtDecode(token);
     console.log('Token decodificado:', decoded);
-    // Extraer rol desde claim estandar de Microsoft
-    const rol = decoded["http://schemas.microsoft.com/ws/2008/06/identity/claims/role"];
 
-    console.log('ROL extraído:', rol);
-    authStore.setAuth(token, rol)
+    const usuario = {
+      id: decoded.sub,
+      nombre: decoded["http://schemas.xmlsoap.org/ws/2005/05/identity/claims/name"],
+      email: decoded["http://schemas.xmlsoap.org/ws/2005/05/identity/claims/emailaddress"],
+      rol: decoded["http://schemas.microsoft.com/ws/2008/06/identity/claims/role"]
+    }
+
+    const rol = usuario.rol;
+
+    authStore.setAuth(token, rol, usuario);
+
 
     if (rol === 'Admin') {
       router.push('/admin')

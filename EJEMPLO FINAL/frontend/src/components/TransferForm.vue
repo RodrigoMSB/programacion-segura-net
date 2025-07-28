@@ -79,20 +79,19 @@ const enviarTransferencia = async () => {
   error.value = ''
   success.value = ''
   loading.value = true
-
+  
   try {
     const token = auth.token
     if (!token) {
       error.value = 'Sesión inválida. Por favor inicie sesión de nuevo.'
       return
     }
-
+    console.log("➡️ Enviando datos de transferencia:", form.value); 
     await api.post('/transferencia/enviar', form.value, {
       headers: {
         Authorization: `Bearer ${token}`
       }
     })
-
     success.value = 'Transferencia realizada exitosamente.'
     form.value = { cuentaDestino: '', monto: '', descripcion: '' }
   } catch (err) {
