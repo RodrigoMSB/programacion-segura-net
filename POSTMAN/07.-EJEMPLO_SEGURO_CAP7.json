@@ -1,0 +1,79 @@
+{
+  "info": {
+    "name": "07.-POSTMAN_SEGURO_CAP7",
+    "schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json"
+  },
+  "item": [
+    {
+      "name": "Login (seguro)",
+      "request": {
+        "method": "POST",
+        "header": [],
+        "url": {
+          "raw": "http://localhost:5000/sessionseguro/login?username=Rodrigo",
+          "protocol": "http",
+          "host": [
+            "localhost"
+          ],
+          "port": "5000",
+          "path": [
+            "sessionseguro",
+            "login"
+          ],
+          "query": [
+            {
+              "key": "username",
+              "value": "Rodrigo"
+            }
+          ]
+        },
+        "body": {
+          "mode": "raw",
+          "raw": ""
+        }
+      }
+    },
+    {
+      "name": "Perfil (seguro)",
+      "request": {
+        "method": "GET",
+        "header": [],
+        "url": {
+          "raw": "http://localhost:5000/sessionseguro/perfil",
+          "protocol": "http",
+          "host": [
+            "localhost"
+          ],
+          "port": "5000",
+          "path": [
+            "sessionseguro",
+            "perfil"
+          ]
+        }
+      }
+    },
+    {
+      "name": "Logout (seguro)",
+      "request": {
+        "method": "POST",
+        "header": [],
+        "url": {
+          "raw": "http://localhost:5000/sessionseguro/logout",
+          "protocol": "http",
+          "host": [
+            "localhost"
+          ],
+          "port": "5000",
+          "path": [
+            "sessionseguro",
+            "logout"
+          ]
+        },
+        "body": {
+          "mode": "raw",
+          "raw": ""
+        }
+      }
+    }
+  ]
+}

@@ -1,0 +1,55 @@
+{
+  "info": {
+    "name": "02–POSTMAN_INSEGURO_CAP2",
+    "schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json"
+  },
+  "item": [
+    {
+      "name": "Crear Reporte Médico",
+      "request": {
+        "method": "POST",
+        "header": [
+          {
+            "key": "Content-Type",
+            "value": "application/json"
+          }
+        ],
+        "body": {
+          "mode": "raw",
+          "raw": "{\n    \"paciente\": \"Juan Pérez\",\n    \"diagnostico\": \"Hipertensión\",\n    \"observaciones\": \"Control mensual recomendado.\"\n}"
+        },
+        "url": {
+          "raw": "http://localhost:5000/reportemedico/crear",
+          "protocol": "http",
+          "host": [
+            "localhost"
+          ],
+          "port": "5000",
+          "path": [
+            "reportemedico",
+            "crear"
+          ]
+        }
+      }
+    },
+    {
+      "name": "Obtener Todos los Reportes",
+      "request": {
+        "method": "GET",
+        "header": [],
+        "url": {
+          "raw": "http://localhost:5000/reportemedico/todos",
+          "protocol": "http",
+          "host": [
+            "localhost"
+          ],
+          "port": "5000",
+          "path": [
+            "reportemedico",
+            "todos"
+          ]
+        }
+      }
+    }
+  ]
+}

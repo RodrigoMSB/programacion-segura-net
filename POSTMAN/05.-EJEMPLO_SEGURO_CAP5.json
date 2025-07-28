@@ -1,0 +1,108 @@
+{
+  "info": {
+    "name": "02–POSTMAN_SEGURO_CAP5 (Autenticación JWT Segura)",
+    "_postman_id": "d5e5fe6c-aaaa-bbbb-cccc-ddddeeeeffff",
+    "description": "Colección de pruebas seguras para autenticación basada en JWT — Capítulo 5",
+    "schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json"
+  },
+  "item": [
+    {
+      "name": "01 - Login Seguro",
+      "request": {
+        "method": "POST",
+        "header": [
+          {
+            "key": "Content-Type",
+            "value": "application/json"
+          }
+        ],
+        "body": {
+          "mode": "raw",
+          "raw": "{\n  \"nombre\": \"admin\",\n  \"contrasena\": \"password123\"\n}"
+        },
+        "url": {
+          "raw": "http://localhost:5000/auth/login",
+          "protocol": "http",
+          "host": [ "localhost" ],
+          "port": "5000",
+          "path": [ "auth", "login" ]
+        }
+      }
+    },
+    {
+      "name": "02 - Acceder Recurso Admin (con JWT)",
+      "request": {
+        "method": "GET",
+        "header": [
+          {
+            "key": "Authorization",
+            "value": "Bearer {{jwt_token}}"
+          }
+        ],
+        "url": {
+          "raw": "http://localhost:5000/admin/recurso",
+          "protocol": "http",
+          "host": [ "localhost" ],
+          "port": "5000",
+          "path": [ "admin", "recurso" ]
+        }
+      }
+    },
+    {
+      "name": "03 - Acceder sin Token",
+      "request": {
+        "method": "GET",
+        "header": [],
+        "url": {
+          "raw": "http://localhost:5000/admin/recurso",
+          "protocol": "http",
+          "host": [ "localhost" ],
+          "port": "5000",
+          "path": [ "admin", "recurso" ]
+        }
+      }
+    },
+    {
+      "name": "04 - Acceder con Token Inválido",
+      "request": {
+        "method": "GET",
+        "header": [
+          {
+            "key": "Authorization",
+            "value": "Bearer token_invalido_falso"
+          }
+        ],
+        "url": {
+          "raw": "http://localhost:5000/admin/recurso",
+          "protocol": "http",
+          "host": [ "localhost" ],
+          "port": "5000",
+          "path": [ "admin", "recurso" ]
+        }
+      }
+    },
+    {
+      "name": "05 - Registro Seguro (opcional)",
+      "request": {
+        "method": "POST",
+        "header": [
+          {
+            "key": "Content-Type",
+            "value": "application/json"
+          }
+        ],
+        "body": {
+          "mode": "raw",
+          "raw": "{\n  \"nombre\": \"nuevo_usuario\",\n  \"email\": \"nuevo@example.com\",\n  \"password\": \"Password123\"\n}"
+        },
+        "url": {
+          "raw": "http://localhost:5000/auth/register",
+          "protocol": "http",
+          "host": [ "localhost" ],
+          "port": "5000",
+          "path": [ "auth", "register" ]
+        }
+      }
+    }
+  ]
+}

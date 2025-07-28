@@ -1,0 +1,79 @@
+{
+  "info": {
+    "name": "02–POSTMAN_SEGURO_CAP2",
+    "schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json"
+  },
+  "item": [
+    {
+      "name": "Crear Reporte Médico (Seguro)",
+      "request": {
+        "method": "POST",
+        "header": [
+          {
+            "key": "Content-Type",
+            "value": "application/json"
+          }
+        ],
+        "body": {
+          "mode": "raw",
+          "raw": "{\n    \"paciente\": \"María González\",\n    \"diagnostico\": \"Diabetes Tipo II\",\n    \"observaciones\": \"Requiere control trimestral.\"\n}"
+        },
+        "url": {
+          "raw": "http://localhost:5000/reportemedico/crear",
+          "protocol": "http",
+          "host": [
+            "localhost"
+          ],
+          "port": "5000",
+          "path": [
+            "reportemedico",
+            "crear"
+          ]
+        }
+      }
+    },
+    {
+      "name": "Obtener Todos los Reportes (Rol Médico)",
+      "request": {
+        "method": "GET",
+        "header": [
+          {
+            "key": "rol",
+            "value": "Medico"
+          }
+        ],
+        "url": {
+          "raw": "http://localhost:5000/reportemedico/todos",
+          "protocol": "http",
+          "host": [
+            "localhost"
+          ],
+          "port": "5000",
+          "path": [
+            "reportemedico",
+            "todos"
+          ]
+        }
+      }
+    },
+    {
+      "name": "Obtener Todos los Reportes (Sin Rol)",
+      "request": {
+        "method": "GET",
+        "header": [],
+        "url": {
+          "raw": "http://localhost:5000/reportemedico/todos",
+          "protocol": "http",
+          "host": [
+            "localhost"
+          ],
+          "port": "5000",
+          "path": [
+            "reportemedico",
+            "todos"
+          ]
+        }
+      }
+    }
+  ]
+}

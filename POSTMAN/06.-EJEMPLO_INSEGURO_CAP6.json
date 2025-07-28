@@ -1,0 +1,72 @@
+{
+  "info": {
+    "name": "06.-POSTMAN_INSEGURO_CAP6",
+    "schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json"
+  },
+  "item": [
+    {
+      "name": "Registrar Usuario",
+      "request": {
+        "method": "POST",
+        "header": [
+          {
+            "key": "Content-Type",
+            "value": "application/json"
+          }
+        ],
+        "body": {
+          "mode": "raw",
+          "raw": "{\n    \"nombre\": \"usuario1\",\n    \"password\": \"MiPasswordInsegura\"\n}"
+        },
+        "url": {
+          "raw": "http://localhost:5000/usuario/registrar",
+          "protocol": "http",
+          "host": [
+            "localhost"
+          ],
+          "port": "5000",
+          "path": [
+            "usuario",
+            "registrar"
+          ]
+        }
+      }
+    },
+    {
+      "name": "Obtener Dato Cifrado",
+      "request": {
+        "method": "GET",
+        "url": {
+          "raw": "http://localhost:5000/usuario/dato-cifrado",
+          "protocol": "http",
+          "host": [
+            "localhost"
+          ],
+          "port": "5000",
+          "path": [
+            "usuario",
+            "dato-cifrado"
+          ]
+        }
+      }
+    },
+    {
+      "name": "Obtener Dato Descifrado",
+      "request": {
+        "method": "GET",
+        "url": {
+          "raw": "http://localhost:5000/usuario/dato-descifrado",
+          "protocol": "http",
+          "host": [
+            "localhost"
+          ],
+          "port": "5000",
+          "path": [
+            "usuario",
+            "dato-descifrado"
+          ]
+        }
+      }
+    }
+  ]
+}

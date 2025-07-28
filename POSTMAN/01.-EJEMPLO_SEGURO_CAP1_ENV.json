@@ -1,0 +1,24 @@
+{
+  "id": "3cf04f3f-0000-0000-0000-envseguridadnet",
+  "name": "01–ENV_INSEGURO_CAP1",
+  "values": [
+    {
+      "key": "host",
+      "value": "localhost",
+      "enabled": true
+    },
+    {
+      "key": "port",
+      "value": "5001",
+      "enabled": true
+    },
+    {
+      "key": "baseUrl",
+      "value": "https://{{host}}:{{port}}",
+      "enabled": true
+    }
+  ],
+  "_postman_variable_scope": "environment",
+  "_postman_exported_at": "2025-06-12T00:00:00Z",
+  "_postman_exported_using": "Postman"
+}

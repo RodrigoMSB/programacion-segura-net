@@ -1,0 +1,82 @@
+{
+  "info": {
+    "_postman_id": "51816738-be01-4d0c-b608-1d4afa1b7525",
+    "name": "02–POSTMAN_SEGURO_CAP4",
+    "schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json",
+    "_exporter_id": "9015145"
+  },
+  "item": [
+    {
+      "name": "Registro válido",
+      "request": {
+        "method": "POST",
+        "header": [
+          {
+            "key": "Content-Type",
+            "value": "application/json"
+          }
+        ],
+        "body": {
+          "mode": "raw",
+          "raw": "{\n    \"nombre\": \"Rodrigo Seguro\",\n    \"email\": \"rodrigo@seguro.com\",\n    \"contrasena\": \"Password123\"\n}"
+        },
+        "url": {
+          "raw": "http://localhost:5000/registro/crear",
+          "protocol": "http",
+          "host": ["localhost"],
+          "port": "5000",
+          "path": ["registro", "crear"]
+        }
+      },
+      "response": []
+    },
+    {
+      "name": "Registro inválido (campos incorrectos)",
+      "request": {
+        "method": "POST",
+        "header": [
+          {
+            "key": "Content-Type",
+            "value": "application/json"
+          }
+        ],
+        "body": {
+          "mode": "raw",
+          "raw": "{\n    \"nombre\": \"Ro\",\n    \"email\": \"correo_invalido\",\n    \"contrasena\": \"abc\"\n}"
+        },
+        "url": {
+          "raw": "http://localhost:5000/registro/crear",
+          "protocol": "http",
+          "host": ["localhost"],
+          "port": "5000",
+          "path": ["registro", "crear"]
+        }
+      },
+      "response": []
+    },
+    {
+      "name": "Registro con contraseña débil",
+      "request": {
+        "method": "POST",
+        "header": [
+          {
+            "key": "Content-Type",
+            "value": "application/json"
+          }
+        ],
+        "body": {
+          "mode": "raw",
+          "raw": "{\n    \"nombre\": \"Usuario Prueba\",\n    \"email\": \"prueba@example.com\",\n    \"contrasena\": \"password\"\n}"
+        },
+        "url": {
+          "raw": "http://localhost:5000/registro/crear",
+          "protocol": "http",
+          "host": ["localhost"],
+          "port": "5000",
+          "path": ["registro", "crear"]
+        }
+      },
+      "response": []
+    }
+  ]
+}

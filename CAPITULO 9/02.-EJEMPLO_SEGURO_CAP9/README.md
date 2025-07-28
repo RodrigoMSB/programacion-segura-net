@@ -46,3 +46,5 @@ dotnet run
 No almacenar usuarios en memoria en producción. Implementar base de datos y autenticación robusta.
 
 ---
+
+## ✅ Listo para practicar seguridad real.

@@ -1,0 +1,160 @@
+{
+  "info": {
+    "name": "01–POSTMAN_INSEGURO_CAP1",
+    "schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json"
+  },
+  "item": [
+    {
+      "name": "Registrar Usuario",
+      "request": {
+        "method": "POST",
+        "header": [
+          {
+            "key": "Content-Type",
+            "value": "application/json"
+          }
+        ],
+        "body": {
+          "mode": "raw",
+          "raw": "{\n    \"nombreUsuario\": \"rodrigo\",\n    \"contrasena\": \"1234\"\n}"
+        },
+        "url": {
+          "raw": "http://localhost:5000/cuenta/registrar",
+          "protocol": "http",
+          "host": ["localhost"],
+          "port": "5000",
+          "path": ["cuenta", "registrar"]
+        }
+      }
+    },
+    {
+      "name": "Registrar Usuario Vacío",
+      "request": {
+        "method": "POST",
+        "header": [
+          {
+            "key": "Content-Type",
+            "value": "application/json"
+          }
+        ],
+        "body": {
+          "mode": "raw",
+          "raw": "{\n    \"nombreUsuario\": \"\",\n    \"contrasena\": \"\"\n}"
+        },
+        "url": {
+          "raw": "http://localhost:5000/cuenta/registrar",
+          "protocol": "http",
+          "host": ["localhost"],
+          "port": "5000",
+          "path": ["cuenta", "registrar"]
+        }
+      }
+    },
+    {
+      "name": "Registrar con Campos Extra",
+      "request": {
+        "method": "POST",
+        "header": [
+          {
+            "key": "Content-Type",
+            "value": "application/json"
+          }
+        ],
+        "body": {
+          "mode": "raw",
+          "raw": "{\n    \"nombreUsuario\": \"hacker\",\n    \"contrasena\": \"hackme\",\n    \"rol\": \"Admin\",\n    \"esAdmin\": true,\n    \"loQueSea\": \"Campo que no debería existir\"\n}"
+        },
+        "url": {
+          "raw": "http://localhost:5000/cuenta/registrar",
+          "protocol": "http",
+          "host": ["localhost"],
+          "port": "5000",
+          "path": ["cuenta", "registrar"]
+        }
+      }
+    },
+    {
+      "name": "Iniciar Sesión Correcto",
+      "request": {
+        "method": "POST",
+        "header": [
+          {
+            "key": "Content-Type",
+            "value": "application/json"
+          }
+        ],
+        "body": {
+          "mode": "raw",
+          "raw": "{\n    \"nombreUsuario\": \"rodrigo\",\n    \"contrasena\": \"1234\"\n}"
+        },
+        "url": {
+          "raw": "http://localhost:5000/cuenta/iniciar-sesion",
+          "protocol": "http",
+          "host": ["localhost"],
+          "port": "5000",
+          "path": ["cuenta", "iniciar-sesion"]
+        }
+      }
+    },
+    {
+      "name": "Iniciar Sesión Contraseña Incorrecta",
+      "request": {
+        "method": "POST",
+        "header": [
+          {
+            "key": "Content-Type",
+            "value": "application/json"
+          }
+        ],
+        "body": {
+          "mode": "raw",
+          "raw": "{\n    \"nombreUsuario\": \"rodrigo\",\n    \"contrasena\": \"malapass\"\n}"
+        },
+        "url": {
+          "raw": "http://localhost:5000/cuenta/iniciar-sesion",
+          "protocol": "http",
+          "host": ["localhost"],
+          "port": "5000",
+          "path": ["cuenta", "iniciar-sesion"]
+        }
+      }
+    },
+    {
+      "name": "Iniciar Sesión Inyección SQL",
+      "request": {
+        "method": "POST",
+        "header": [
+          {
+            "key": "Content-Type",
+            "value": "application/json"
+          }
+        ],
+        "body": {
+          "mode": "raw",
+          "raw": "{\n    \"nombreUsuario\": \"' OR '1'='1\",\n    \"contrasena\": \"' OR '1'='1\"\n}"
+        },
+        "url": {
+          "raw": "http://localhost:5000/cuenta/iniciar-sesion",
+          "protocol": "http",
+          "host": ["localhost"],
+          "port": "5000",
+          "path": ["cuenta", "iniciar-sesion"]
+        }
+      }
+    },
+    {
+      "name": "Consultar Perfil (Sin Autenticación)",
+      "request": {
+        "method": "GET",
+        "header": [],
+        "url": {
+          "raw": "http://localhost:5000/cuenta/perfil",
+          "protocol": "http",
+          "host": ["localhost"],
+          "port": "5000",
+          "path": ["cuenta", "perfil"]
+        }
+      }
+    }
+  ]
+}
