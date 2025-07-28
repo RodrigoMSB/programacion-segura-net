@@ -22,3 +22,15 @@ dist-ssr
 *.njsproj
 *.sln
 *.sw?
+
+# node y compilados
+node_modules/
+dist/
+.vscode/
+
+# bases de datos locales
+*.db
+
+# output de .NET
+bin/
+obj/
