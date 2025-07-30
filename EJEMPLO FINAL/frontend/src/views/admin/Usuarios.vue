@@ -2,19 +2,19 @@
   <div class="container mt-4">
     <h2 class="mb-3">Gestión de Usuarios</h2>
 
-    <!-- Alerta de error -->
+    <!-- Muestra una alerta si ocurre un error al cargar usuarios -->
     <div v-if="usuariosStore.error" class="alert alert-danger">
       {{ usuariosStore.error }}
     </div>
 
-    <!-- Loading Spinner -->
+    <!-- Indicador visual de carga -->
     <div v-if="usuariosStore.loading" class="text-center my-4">
       <div class="spinner-border text-primary" role="status">
         <span class="visually-hidden">Cargando...</span>
       </div>
     </div>
 
-    <!-- Tabla de usuarios -->
+    <!-- Tabla que muestra todos los usuarios del sistema -->
     <table
       v-if="!usuariosStore.loading && usuariosStore.usuarios.length"
       class="table table-bordered table-hover"
@@ -28,6 +28,7 @@
         </tr>
       </thead>
       <tbody>
+        <!-- Iteramos por cada usuario registrado -->
         <tr v-for="usuario in usuariosStore.usuarios" :key="usuario.id">
           <td>{{ usuario.id }}</td>
           <td>{{ usuario.nombre }}</td>
@@ -37,6 +38,7 @@
       </tbody>
     </table>
 
+    <!-- Si no hay usuarios, se muestra mensaje neutro -->
     <div
       v-else-if="!usuariosStore.loading && !usuariosStore.usuarios.length"
       class="text-center text-muted"
@@ -44,7 +46,7 @@
       No hay usuarios registrados.
     </div>
 
-    <!-- Formulario crear cliente -->
+    <!-- Formulario para crear un nuevo cliente -->
     <div class="card p-4 mt-4 shadow-sm">
       <h4 class="mb-3">Crear Nuevo Cliente</h4>
       <p class="text-muted mb-4">
@@ -82,24 +84,31 @@
 </template>
 
 <script setup>
+// Importamos funciones de Vue y el store de usuarios
 import { ref, onMounted } from 'vue'
 import { useUsuariosStore } from '@/store/usuarios'
 
+// Instancia del store que maneja usuarios
 const usuariosStore = useUsuariosStore()
 
+// Objeto reactivo para capturar datos del nuevo cliente
 const nuevoCliente = ref({
   nombre: '',
   email: ''
 })
 
+// Función para crear un nuevo cliente desde el formulario
 const crearCliente = async () => {
   await usuariosStore.crearCliente({
     nombre: nuevoCliente.value.nombre,
     email: nuevoCliente.value.email
   })
+
+  // Limpiamos el formulario tras crear al cliente
   nuevoCliente.value = { nombre: '', email: '' }
 }
 
+// Al montar el componente, cargamos los usuarios existentes
 onMounted(() => {
   usuariosStore.cargarUsuarios()
 })

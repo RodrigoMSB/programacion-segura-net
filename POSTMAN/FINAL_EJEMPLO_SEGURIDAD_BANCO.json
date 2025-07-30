@@ -16,12 +16,12 @@
             "header": [{ "key": "Content-Type", "value": "application/json" }],
             "body": {
               "mode": "raw",
-              "raw": "{\n  \"email\": \"cliente@banco.com\",\n  \"password\": \"cliente123\"\n}"
+              "raw": "{\n  \"nombre\": \"Cliente Uno\",\n  \"email\": \"cliente@banco.com\",\n  \"password\": \"Cliente123!\",\n  \"rol\": \"Cliente\"\n}"
             },
             "url": {
-              "raw": "{{base_url}}/auth/register-cliente",
+              "raw": "{{base_url}}/auth/register",
               "host": ["{{base_url}}"],
-              "path": ["auth", "register-cliente"]
+              "path": ["auth", "register"]
             }
           }
         },
@@ -32,12 +32,12 @@
             "header": [{ "key": "Content-Type", "value": "application/json" }],
             "body": {
               "mode": "raw",
-              "raw": "{\n  \"email\": \"admin@banco.com\",\n  \"password\": \"admin123\"\n}"
+              "raw": "{\n  \"nombre\": \"Admin Uno\",\n  \"email\": \"admin@banco.com\",\n  \"password\": \"Admin123!\",\n  \"rol\": \"Admin\"\n}"
             },
             "url": {
-              "raw": "{{base_url}}/auth/register-admin",
+              "raw": "{{base_url}}/auth/register",
               "host": ["{{base_url}}"],
-              "path": ["auth", "register-admin"]
+              "path": ["auth", "register"]
             }
           }
         },
@@ -48,14 +48,27 @@
             "header": [{ "key": "Content-Type", "value": "application/json" }],
             "body": {
               "mode": "raw",
-              "raw": "{\n  \"email\": \"cliente@banco.com\",\n  \"password\": \"cliente123\"\n}"
+              "raw": "{\n  \"email\": \"cliente@banco.com\",\n  \"password\": \"Cliente123!\"\n}"
             },
             "url": {
-              "raw": "{{base_url}}/auth/login-cliente",
+              "raw": "{{base_url}}/auth/login",
               "host": ["{{base_url}}"],
-              "path": ["auth", "login-cliente"]
+              "path": ["auth", "login"]
             }
-          }
+          },
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "exec": [
+                  "let jsonData = pm.response.json();",
+                  "if(jsonData.token){",
+                  "   pm.environment.set(\"token_cliente\", jsonData.token);",
+                  "}"
+                ]
+              }
+            }
+          ]
         },
         {
           "name": "Login Admin",
@@ -64,14 +77,27 @@
             "header": [{ "key": "Content-Type", "value": "application/json" }],
             "body": {
               "mode": "raw",
-              "raw": "{\n  \"email\": \"admin@banco.com\",\n  \"password\": \"admin123\"\n}"
+              "raw": "{\n  \"email\": \"admin@banco.com\",\n  \"password\": \"Admin123!\"\n}"
             },
             "url": {
-              "raw": "{{base_url}}/auth/login-admin",
+              "raw": "{{base_url}}/auth/login",
               "host": ["{{base_url}}"],
-              "path": ["auth", "login-admin"]
+              "path": ["auth", "login"]
             }
-          }
+          },
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "exec": [
+                  "let jsonData = pm.response.json();",
+                  "if(jsonData.token){",
+                  "   pm.environment.set(\"token_admin\", jsonData.token);",
+                  "}"
+                ]
+              }
+            }
+          ]
         }
       ]
     },

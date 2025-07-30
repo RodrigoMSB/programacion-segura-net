@@ -1,6 +1,6 @@
 {
   "info": {
-    "name": "02–POSTMAN_SEGURO_CAP5 (Autenticación JWT Segura)",
+    "name": "05.–POSTMAN_SEGURO_CAP5",
     "_postman_id": "d5e5fe6c-aaaa-bbbb-cccc-ddddeeeeffff",
     "description": "Colección de pruebas seguras para autenticación basada en JWT — Capítulo 5",
     "schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json"

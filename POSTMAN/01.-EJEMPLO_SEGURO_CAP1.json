@@ -1,6 +1,6 @@
 {
   "info": {
-    "name": "01–POSTMAN_SEGURO_CAP1",
+    "name": "01.–POSTMAN_SEGURO_CAP1",
     "_postman_id": "e75e7f60-dfce-4f1f-8e56-111111111111",
     "description": "Colección de pruebas para API de Seguridad - Capítulo 1 (versión segura), usando variables de entorno",
     "schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json"

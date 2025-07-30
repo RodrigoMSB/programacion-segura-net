@@ -2,12 +2,12 @@
   <div class="container mt-4">
     <h2 class="mb-3">Auditoría de Transferencias</h2>
 
-    <!-- Mensaje de error -->
+    <!-- Sección para mostrar un mensaje de error si ocurre una falla al cargar -->
     <div v-if="error" class="alert alert-danger">
       {{ error }}
     </div>
 
-    <!-- Tabla de auditoría -->
+    <!-- Tabla que muestra los registros de auditoría si existen -->
     <table v-if="auditorias.length" class="table table-bordered table-hover">
       <thead class="table-primary">
         <tr>
@@ -35,7 +35,7 @@
       </tbody>
     </table>
 
-    <!-- Si no hay auditorías -->
+    <!-- Mensaje en caso de que no existan registros -->
     <div v-else class="text-muted text-center">
       No hay auditorías registradas.
     </div>
@@ -43,22 +43,36 @@
 </template>
 
 <script setup>
+// Composición API de Vue
 import { ref, onMounted } from 'vue'
+
+// Cliente HTTP con token automático
 import api from '../../axios'
+
+// Store de autenticación para obtener el token JWT
 import { useAuthStore } from '../../store/auth'
 
+// Lista de auditorías recibidas desde el backend
 const auditorias = ref([])
+
+// Variable para guardar errores si ocurren
 const error = ref('')
+
+// Store que maneja los datos del usuario actual (token incluido)
 const authStore = useAuthStore()
 
+// Función para obtener la lista de auditorías desde el backend
 const fetchAuditorias = async () => {
-  error.value = ''
+  error.value = '' // limpiar errores previos
   try {
+    // Llamado GET autenticado al endpoint del backend
     const res = await api.get('/admin/auditorias', {
       headers: {
         Authorization: `Bearer ${authStore.token}`
       }
     })
+
+    // Guardamos la respuesta (array de objetos de auditoría)
     auditorias.value = res.data
   } catch (err) {
     console.error('Error al cargar auditorías:', err)
@@ -66,5 +80,6 @@ const fetchAuditorias = async () => {
   }
 }
 
+// Ejecutar cuando el componente se monte
 onMounted(fetchAuditorias)
 </script>
