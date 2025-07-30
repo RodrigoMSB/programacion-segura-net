@@ -45,7 +45,9 @@ Revisa **tanto el ejemplo inseguro como el seguro** para comprender en profundid
 
 Para cualquier duda, queridos y queridas colegas, me ubican en el siguiente correo:
 
-rodrigo.silva@neitcom-compliance.cl
+    rodrigo.silva@neitcom-compliance.cl
 
+y copian a Salvador, de Netec, a su correo: 
+    salvador.garduno@netec.com.mx
 
 Un abrazo!!!

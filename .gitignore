@@ -25,6 +25,9 @@ Thumbs.db
 # Logs
 *.log
 
+# Ignorar la base de datos SQLite
+*.db
+
 # Others
 *.vs/
 
